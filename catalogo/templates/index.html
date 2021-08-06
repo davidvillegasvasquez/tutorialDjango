@@ -1,0 +1,23 @@
+{% extends "base_generica.html" %}<!--Esta es una etiqueta de extensión para django -->
+
+{% block content %}
+<h1>Inicio Librería Local</h1>
+
+  <p>Bienvenido a la <em> "La Librería Local"</em>, un sitio web muy sencillo desarrollado como tutorial por Mozilla Developer Network.</p>
+
+<h2>Contenido Dinámico</h2>
+
+  <p>La librería tiene las siguientes estadísticas de registros:</p>
+  <ul>
+    <li><strong>Libros:</strong> {{ num_libros }}</li><!--Esta es una variable de plantilla: se reconoce fácil por estar dentro de doble llave que es usada para mostrar valores de variables de plantilla. -->
+    <li><strong>Copias:</strong> {{ num_ejemEspe }}</li>
+    <li><strong>Copias Disponibles:</strong> {{ num_ejem_disponibles }}</li><!--OJO: el nombre de la variable de plantilla, es el nombre del elemento respectivo en el diccionario que retorna la vista, no el de la variable para asociada a esta en el diccionario en dicha vista (en este en particular es {...,'num_ejem_disponibles': num_ejem_dispon,...} -->
+    <li><strong>Autores:</strong> {{ num_autores }}</li>
+    <li><strong>Cantidad de Géneros:</strong> {{ numero_generos }}</li>
+    <li><strong>CantGéner+Autores a nivel plantilla:</strong> {{ numero_generos }}+{{ num_autores }}</li>
+    <li><strong>CantGéner+Autores desde vista ('totalGeneAutor1':subTotal1):</strong> {{ totalGeneAutor1 }}</li>
+    <li><strong>Cantidad de autores con apellido "Poe":</strong> {{ conPoe }}</li>
+    <li><strong>Cantidad de títulos con la palabra "cuervo"</strong>: {{ numTítulosconCuervo }},  que son: <strong> {{ titConCuervo }}. </strong></li>
+  </ul>
+
+{% endblock %}

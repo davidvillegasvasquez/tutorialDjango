@@ -1,0 +1,151 @@
+Las URI guay no cambian
+¿Qué hace que una URI sea guay?
+Una URI guay es la que no cambia.
+¿Qué URIs son las que cambian?
+Las URIs no cambian: la gente las cambia.
+En teoría no hay ninguna razón en absoluto para que la gente cambie las URI (o para dejar de mantener los documentos) pero en la práctica hay millones de razones.
+
+En teoría, el dueño del nombre de dominio del espacio es dueño del espacio del nombre de dominio y por tanto de todas las URI en él. Excepto en casos de insolvencia, nada le impide al dueño del nombre de dominio, mantenerlo. Y en teoría el espacio URI bajo su nombre de dominio está totalmente bajo su control, así que tú puedes hacer que sea tan estable como tú quieras. Más aún, la única buena razón para que un documento desaparezca de la Web es que la empresa dueña del dominio haya dejado el negocio o no pueda permitirse el lujo de mantener en funcionamiento el servidor. Entonces, ¿por qué hay tantos enlaces colgando en el mundo? En parte se debe sólo a falta de previsión. Aquí hay algunas razones que habrás oído:
+
+Tan sólo estamos reorganizando nuestro sitio para hacerlo mejor.
+¿Realmente crees que las viejas URI no pueden seguir funcionando? Si es así, las elegiste muy mal. Piensa las nuevas de manera que puedas mantenerlas funcionando tras el próximo rediseño.
+
+Nosotros tenemos tanto material que no podemos mantener un registro de lo que está desactualizado, lo que es confidencial, lo que es válido; así que hemos pensado que lo mejor es sacarlo todo fuera.
+Aunque yo puedo simpatizar con ello - El W3C pasó por un período como ese, en el que teníamos que cribar cuidadosamente el material de archivo para mantener la confidencialidad antes de publicarlo - la solución es la previsión. Asegúrate de que capturas, con cada documento, su fecha de distribución admisible, de creación, e idealmente su fecha de expiración. Guarda estos metadatos.
+
+Bien, nos encontramos con que tuvimos que mover los archivos...
+Esta es una de las excusas más flojas. Mucha gente no sabe que los servidores como Apache te dan un montón de control sobre una relación flexible entre la URI de un objeto y dónde está realmente, en un sistema de archivos, el archivo que lo representa. Piensa en el espacio URI como un espacio abstracto, perfectamente organizado. Entonces, traza un mapa de cualquiera que sea la forma en que realmente lo has llevado a cabo. Luego díselo a tu servidor. Puedes, incluso, escribir partes de tu servidor para hacerlo más exacto.
+
+Fulano ya no mantiene ese archivo, lo hace Mengano.
+¿Qué hacía esa URI con el nombre de Fulano en ella? ¿Estaba en su directorio? Ya veo.
+
+Nosotros usábamos un "script" cgi para esto y ahora usamos un programa binario.
+Se tiene la loca idea de que las páginas producidas por scripts tienen que estar localizadas en un área "cgibin" o "cgi". Esto demuestra el mecanismo con el que estás haciendo funcionar tu servidor. Tú cambias el mecanismo (incluso manteniendo el mismo contenido) y ¡ay, todas tus URI cambian!.
+
+Por ejemplo, tomemos la Fundación Nacional para la Ciencia (NSF):
+
+NSF Online Documents
+http://www.nsf.gov/cgi-bin/pubsys/browser/odbrowse.pl
+
+parece claro que no podemos confiar en que la principal página para comenzar a buscar documentos vaya a estar ahí durante algunos años. "cgi-bin" y "oldbrowse" y ".pl" apuntan todas un poco a como-lo hacemos-ahora. En cambio, si usas la página para encontrar un documento, obtienes primero un igualmente malo
+
+Report of Working Group on Cryptology and Coding Theory
+http://www.nsf.gov/cgi-bin/getpub?nsf9814
+
+para la página inicial de los documentos, pero el documento html en sí mismo en cambio está mucho mejor:
+
+http://www.nsf.gov/pubs/1998/nsf9814/nsf9814.htm
+
+Mirando este, el encabezado "pubs/1998" va a dar una buena pista, a cualquier servicio de archivos futuro, de que el viejo esquema de clasificación de documentos está en marcha. Aunque en el 2098 los números de documento puedan parecer diferentes, yo puedo imaginar que esta URI seguirá siendo válida, y el NSF o cualquiera que se encargue del archivo no se avergonzará en absoluto por ello.
+
+Yo no creía que las URL tuvieran que ser persistentes, esos eran los URN.
+Este es, probablemente, uno de los peores efectos colaterales de las discusiones sobre los URN (nombre de recurso uniforme) Algunos parecen pensar que porque se investiga sobre los espacios de nombres, que serán más persistentes, pueden dejar colgando los enlaces tanto como quieran, pues "los URN los arreglarán todos". Si eres uno de estos, permíteme desilusionarte.
+
+La mayoría de los esquemas URN que he visto, parecen algo como un ID seguido de cualquier dato y una cadena que tú elijas, o sólo una cadena elegida por ti. Esto parece más una URI en HTTP. En otras palabras, si crees que tu organización será capaz de crear URNs que serán definitivos, entonces pruébalo haciéndolo ahora y usándolos para tus URIS en HTTP. No hay nada en HTTP que haga que tus URIs sean inestables. Es tu organización la que lo hace. Crea una base de datos con documentos mapa de los nombres de archivo actuales y deja que el servidor Web los use realmente para recuperar los archivos.
+
+Si has llegado a este punto, entonces, a menos que tengas el tiempo, el dinero y los contactos para conseguir algún software ya diseñado, podrías alegar la siguiente excusa:
+
+Nos gustaría hacerlo, pero es que no tenemos las herramientas adecuadas.
+Ahora es cuando yo puedo simpatizar contigo. Estoy totalmente de acuerdo. Lo que necesitas hacer es tener el servidor Web apuntando a un URI persistente en un momento dado y devolver el archivo, donde quiera que tu actual sistema loco de archivos los siga guardando por el momento. Te gustaría ser capaz de guardar las URI en el archivo como si fueran un cheque y mantener la base de datos constantemente en consonancia con la realidad. Te gustaría guardar las relaciones entre diferentes versiones y traducciones del mismo documento y, te gustaría mantener un registro del "checksum" para proporcionar un resguardo contra la corrupción de archivos por error accidental. Y los servidores Web no salen de sus cajas con estas características. Cuando quieres crear un nuevo documento, tu editor te pide una URI en vez de darte una.
+
+Necesitas poder cambiar cosas como el título de propiedad, el acceso, el nivel de archivos, el nivel de seguridad y demás, de un documento en el espacio URI sin necesidad de cambiar la URI.
+
+Muy mal. Pero llegaremos allí. En el W3C usamos la funcionalidad de Jigedit (el servidor usado para editar Jigsaw) que rastrea versiones, y estamos experimentando con scripts para la creación de documentos. Si tú creas herramientas, servidores y clientes, ¡toma nota!
+
+Esta es una excelente razón, que hace que sea aplicable a muchas páginas del W3C, incluyendo esta, el dicho: "haz lo que digo, no lo que hago"
+
+¿Por qué debo ocuparme yo?
+Cuando cambias una URI en tu servidor, nunca puedes saber con certeza quién tendrá un enlace a la vieja URI. Puede que alguien haya creado un enlace a tu página desde otra página. Puede que alguien haya incluido tu página en su relación de favoritos. Puede que hayan garrapateado la dirección de tu página en el margen de una carta a un amigo.
+
+Cuando alguien sigue un enlace y éste está roto, generalmente pierde la confianza en el propietario del servidor. También se frustran, emocional y prácticamente, al no lograr su objetivo.
+
+Muchas personas se quejan todo el tiempo de los enlaces rotos, así que espero que el daño sea obvio. También espero que sea obvio que el daño en la reputación es para quien mantiene el servidor cuyos documentos se han volatilizado.
+
+Así que, ¿qué debo hacer? Diseñando URIs
+Es deber de un Webmaster asignar URIs que puedan mantenerse en 2 años, en 20 años, en 200 años. Esto requiere pensar, organización y compromiso.
+
+Las URIs cambian cuando hay alguna información en ellas que cambia. Es crítica la manera en que las diseñas. (¿Qué? ¿diseñar una URI? ¿Yo tengo que diseñar una URI? Sí, tú tienes que pensar en ello.). Diseñar significa, la mayoría de las veces, dejar la información fuera.
+
+La fecha de creación del documento - la fecha en que la URI se publica - es algo que no cambiará. Es muy útil para separar las peticiones que usan un sistema nuevo de aquellas que usan un sistema antiguo. Este es un buen punto para empezar con una URI. Si un documento está datado de alguna manera, incluso aunque siga siendo de interés durante generaciones, la fecha es un buen comienzo.
+
+La única excepción es una página que es deliberadamente la "última" página para, por ejemplo, toda una organización o una gran parte de ella.
+
+http://www.pathfinder.com/money/moneydaily/latest/
+
+es la más reciente columna "Dinero diario" en la revista "Dinero". La principal razón para que no sea necesaria la fecha en esta URI es que no hay razón para que la persistencia de la URI sobreviva a la propia revista. El concepto de la columna "Dinero" de hoy se desvanece si "Dinero" deja de producirse. Si quieres enlazar con el contenido, tienes que hacerlo donde aparece separadamente en los archivos como
+
+http://www.pathfinder.com/money/moneydaily/1998/981212.moneyonline.html
+
+(Parece bueno. Asume que "money" significará la misma cosa a través de la vida de pathfinder.com. Hay una duplicación de "98" y un ".html" que tú no necesitas, pero por otro lado esta parece una URI sólida).
+
+Qué dejar fuera
+¡Todo! Tras la fecha de creación, poner cualquier información en el nombre es buscar problemas de una manera u otra.
+
+Nombre del autor- la autoría puede cambiar con nuevas versiones. La gente deja las organizaciones y las cosas pasan a otras manos.
+Asunto. Esto es espinoso. Siempre parece bueno en el momento, pero cambia sorprendentemente rápido. Discutiré esto más adelante.
+Estatus- directorios como "viejo" y "borrador" y cosas por el estilo, por no mencionar "último" y "guay" aparecen por los sistemas de archivo. Los documentos cambian su estatus - o no habría necesidad de producir borradores. La última versión de un documento necesita un identificador persistente cualquiera que sea su estatus. Mantén el estatus separado del nombre.
+Acceso. En el W3C dividimos el sitio en "Acceso para empleados", "Acceso para miembros" y "Acceso público". Suena bien, pero naturalmente los documentos surgen como ideas de los empleados, son discutidos por los miembros, y luego se publican. ¡Una vergüenza, de hecho, si cada vez que un documento se expone a una amplia discusión todos los enlaces viejos fallan! Ahora lo estamos cambiando para usar un simple código de fechas.
+Nombre de la extensión de fichero. Esto es muy común. "cgi" e incluso ".html" son algo que cambiará. Puede que dentro de 20 años no sigas usando HTML para esa página, pero podrías querer que los enlaces de hoy en día sigan siendo válidos. La forma ortodoxa de hacer enlaces en el sitio del W3C no usa la extensión. (¿Cómo?).
+Mecanismos del software. Busca en las URIs los "cgi", "exec" y otros reveladores "¡mira que software estamos usando!". ¿Alguien quiere comprometerse a usar el resto de su vida scripts cgi en perl? ¿No? Quita el .pl. Lee el manual del servidor para saber cómo hacerlo.
+Nombre del disco - ¡dadme un respiro! Pero yo lo he visto.
+Así que un ejemplo mejor para nuestro sitio, es sencillo:
+
+http://www.w3.org/1998/12/01/chairs
+
+un informe del acta de una reunión de los directivos del W3C.
+
+Temas y Clasificación por asunto
+Entraré en este peligro con más detalle, ya que es una de las cosas más difíciles de evitar. Generalmente, los temas acaban siendo URIs cuando tú clasificas tus documentos de acuerdo con un desglose del trabajo que estás haciendo. Este desglose puede cambiar. Los nombres de áreas cambiarán. En el W3C buscamos cambiar "MarkUp" por "Markup" y luego por "HTML" para reflejar el contenido real de la sección. También hay que tener cuidado pues a menudo este es un nombre de espacio categórico. ¿Estás seguro de que dentro de 100 años no vas a querer reutilizar algo?. Por ejemplo, nosotros en nuestra corta vida deseamos reutilizar "History" y "Stylesheets".
+
+Esta es una tentadora manera de organizar un sitio Web - y de hecho una tentadora manera de organizar cualquier cosa, incluyendo toda la Web. Es una solución fantástica a medio plazo pero tiene serios inconvenientes a largo plazo.
+
+Parte de la razón para ello está en la filosofía del significado. Cada término en el lenguaje supone un potencial grupo de temas y cada persona puede tener una idea diferente de lo que significa. Porque la relación entre temas es más como una telaraña que como un árbol, incluso para aquellos que consideran que una Web puede escoger una representación diferente en forma de árbol. Éstos son mis (frecuentemente repetidos) comentarios generales sobre los peligros de la clasificación jerárquica como solución general.
+
+Efectivamente, cuando tú usas un nombre de tema en una URI estás atándote a ti mismo a alguna clasificación. Es posible que en el futuro prefieras una diferente. Entonces la URI obligatoriamente se romperá.
+
+Una razón para usar un área temática como parte de una URI es que la responsabilidad de las subpartes de un espacio URI frecuentemente se delega y entonces necesitas un nombre para el cuerpo organizativo, la subdivisión, o grupo, o lo que sea que tiene la responsabilidad sobre ese sub-espacio. Esto está atando tus URIs a la estructura organizativa. Esto es seguro, normalmente, sólo cuando está protegido por una fecha delante de la URI (a su izquierda): 1998/pics puede usarse para significar en tu servidor "lo que en 1998 nosotros queremos decir con pics", en vez de "lo que en 1998 hicimos con lo que nosotros ahora nos referimos como pics".
+
+No olvides el nombre de dominio
+Recuerda que esto se aplica no sólo al "path" de una URI sino al nombre del servidor. Si tienes servidores separados para algunas de tus cosas, recuerda que esa división será imposible de cambiar sin destruir muchos, muchos, enlaces. Algunos nombres de dominio clásicos que denotan "mira qué software estamos usando" son, "cgi.pathfinder.com", "secure", "lists.w3.org". Estos están hechos para facilitar la administración del servidor. Si representan divisiones de tu empresa, o estatus de documentos, o niveles de acceso, o niveles de seguridad, se muy, muy cuidadoso con usar más de un nombre de dominio para más de un tipo de documento. Recuerda que puedes esconder muchos servidores Web dentro de un aparentemente único servidor, utilizando redirecciones y apoderamientos (proxying).
+
+Ah, y piensa en tu nombre de dominio. Si tu nombre no es jabón, ¿querrás que se refieran a ti como "jabón.com" incluso cuando has cambiado tu línea de productos a algo distinto?. (Con mis disculpas para quien quiera que sea el dueño del dominio jabón.com en este momento).
+
+Conclusiones
+Mantener las URIs de manera que sigan sirviendo en 2, 20 o 200 años es claro que no es tan simple como suena. Sin embargo, en toda la Web, los webmasters están tomando decisiones que lo harán realmente difícil para ellos mismos en el futuro. A menudo, esto se debe a que ellos están usando herramientas cuyas tareas parecen presentar el mejor sitio posible en el momento, y nadie ha evaluado lo que pasará con los enlaces cuando las cosas cambien. El mensaje aquí es, sin embargo, que muchas, muchas, cosas pueden cambiar y que tus URIs pueden y deben seguir siendo las mismas. Sólo podrán serlo si piensas en cómo diseñarlas.
+
+Véase también:
+
+Jacob Nielsen's "Alertbox" rant on the same topic
+ 
+
+(volver a Etiquette for server administrators, sobre cómo Structure of your work)
+Nota al pie
+Cómo puedo eliminar las extensiones de fichero...
+...de mis URIs servidor Web práctico basado en archivos?
+
+Si tú estás usando, por ejemplo, Apache, puedes configurarlo para la negociación de contenido. Mantienes la extensión de archivo (como .png) en el fichero (por ejemplo, myperro.png) pero puedes referirte a ese recurso Web sin ella. Apache entonces revisa el directorio buscando todos los ficheros con ese nombre y con cualquier extensión, y puede también recoger el más adecuado de entre una serie (por ejemplo, GIF y PNG). (Tú no tienes que poner diferentes tipos de ficheros en diferentes directorios, de hecho la negociación de contenido no funciona si lo haces)
+
+Configura tu servidor para la negociación de contenido
+Haz siempre referencia a la URI sin extensiones
+Las referencias que contengan la extensión seguirán funcionando pero no permitirán que tu servidor seleccione la mejor de entre las disponibles actualmente y con formatos futuros.
+
+(De hecho, miperro, miperro.png y miperro.gif son cada uno de ellos recursos Web válidos. miperro es contenido-tipo-genérico. miperro.png y miperro.gif son contenido-tipo-específico).
+
+Por supuesto que si tú estas construyendo tu propio servidor, usar una base de datos para relacionar identificadores persistentes con su forma actual, es una idea muy limpia -- aunque debes tener cuidado con el crecimiento ilimitado de tu base de datos.
+
+Salón de la infamia -- historia 1: Canal 7
+Durante 1999, http://www.whdh.com/stormforce/closings.shtml era una página en la que encontré documentación sobre los colegios cerrados debido a la nieve. ¡Una alternativa a esperar a verlos pasar por la pantalla de televisión! Puse un enlace a ella desde mi página personal. Llegó la primera gran tormenta de 2000, y fui a echar un vistazo a la página, y en ella decía:
+
+"Closings as of There are currently no closings in effect Please check back when the weather warrants"
+
+No puede haber una tormenta tan grande. Lo divertido es que la fecha no aparece. Pero entonces, si voy a la página principal del sitio, hay un gran botón llamado "Cierres escolares" que me lleva a http://www.whdh.com/stormforce/ que tiene una lista de muchos colegios cerrados.
+
+Bien, es posible que ellos hayan cambiado el sistema que recibió la lista definitiva de cierres - pero no necesitan cambiar la URI.
+
+Salón de la Infamia -- historia 2: Microsoft Netmeeting
+Una cosa ingeniosa que llegó con la creciente dependencia de la Web fue que las aplicaciones pueden tener incluidos enlaces de vuelta a los sitios de los fabricantes. Esto ha sido usado y abusado ampliamente, pero - tienes que mantener la misma URL. Justo el otro día intenté seguir un enlace del Microsoft Netmeeting 2/algo desde el menú "Help/Microsoft on the Web/Free stuff" y dio un Error 4004 - no hubo respuesta del servidor. Probablemente ellos lo hayan arreglado ahora...
+
+ 
+
+©1998 Tim BL
+Nota histórica: Al finalizar el Siglo XX, cuando esto fue escrito, "guay" era un epíteto de aprobación, especialmente entre la juventud, indicando algo moderno, calidad, o adecuación. La prisa por marcar nuestro territorio DNS incluye la elección de nombre de dominio y de dirección URI que algunas veces está más dirigida hacia aparentar ser "guay" que hacia una útil longevidad. Esta nota es un esfuerzo para reconducir la energía que hay tras la búsqueda de lo guay.

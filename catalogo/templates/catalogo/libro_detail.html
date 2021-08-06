@@ -1,0 +1,25 @@
+<!-- Recuerde: el nombre de esta plantilla vinculada a una vista genérica de tipo lista para el modelo Libro, debe tener el nombre nombreModeloMinúscula_list.html dónde _list es palabra reservada de django que indica que es plantilla asociada a dicho modelo en la vista genérica de este. Es una convención, arbitraria. Para modificar este comportamiento estandarizado, se debe referenciar dentro de la definición de la vista generica con algunas modificaciónes. -->
+
+{% extends "base_generica.html" %}
+
+{% block content %}
+  <h1>Title: {{ libro.titulo }}</h1>
+
+  <p><strong>Autor:</strong> <a href="">{{ libro.autor }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Resumen:</strong> {{ libro.resumen }}</p>
+  <p><strong>ISBN:</strong> {{ libro.isbn }}</p>
+  <p><strong>Lenguaje:</strong> {{ libro.lenguaje }}</p>
+  <p><strong>Genre:</strong> {% for genero in libro.genero.all %} {{ genero }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Copies</h4>
+
+    {% for copy in libro.libroinstance_set.all %}
+    <hr>
+    <p class="{% if copy.status == 'a' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">{{ copy.get_status_display }}</p>
+    {% if copy.status != 'a' %}<p><strong>Due to be returned:</strong> {{copy.due_back}}</p>{% endif %}
+    <p><strong>Imprint:</strong> {{copy.imprint}}</p>
+    <p class="text-muted"><strong>Id:</strong> {{copy.id}}</p>
+    {% endfor %}
+  </div>
+{% endblock %}
