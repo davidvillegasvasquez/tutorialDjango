@@ -25,7 +25,7 @@
 <!-- A fuerza bruba el link para Home sería /catalogo peró no sería ni flexible ni robusto-->
           <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'libros' %}">Todos los libros</a></li>
-          <li><a href="">Todos los autores</a></li>
+          <li><a href="{% url 'autores' %}">Todos los autores</a></li>
           <li><a href="/admin">Ir a admin</a></li><!-- Y así accedo a un documento externo a la app dentro del mismo proyecto (por lo menos para admin). No sirve usando etiquetas de llaves y %: parece que sólo sirven para las plantillas, y no para el administrador u otra dependencia builtin de django.-->
       </ul>
      {% endblock %}
@@ -33,6 +33,25 @@
       <div class="col-sm-10 ">
       {% block content %}{% endblock %}
 
+<!-- Introducimos código para hacer paginación en el bloque de contenido (block content: -->
+	{% block pagination %}
+  {% if is_paginated %}
+      <div class="pagination">
+          <span class="page-links">
+              {% if page_obj.has_previous %}
+                  <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previo</a>
+              {% endif %}
+              <span class="page-current">
+                  Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+              </span>
+              {% if page_obj.has_next %}
+                  <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">Próximo</a>
+              {% endif %}
+          </span>
+      </div>
+  {% endif %}
+{% endblock %} 
+<!-- Fin del bloque de código para paginación.-->
       </div>
     </div>
 

@@ -38,9 +38,16 @@ def index(request):
 #Fijese la forma más sencilla de conformar una vista genérica, en este caso, una vista genérica de tipo list:
 class VistaListaDeLibros(generic.ListView):
     model = Libro #De la clase-modelo Libro.
+    paginate_by = 2 # Páginamos por lotes de dos en dos.
 
 #Como sabemos, las vistas genéricas no necesitan función renderizadora: se relacionan automáticamente con sus respectivas plantilla _list y _detail según el caso del tipo de vista genérica de que se trate. En la carpeta con el nombre de la aplicación (catalogo) dentro de la carpeta templates.
 
 #Y aquí una de tipo detalle (detail), respectivamente:
 class VistaDetalleDeLibro(generic.DetailView):
-    model = Libro
+    model = Libro  #Mismo modelo Libro, distinto tipo de vista genérica (generic.DetailView)
+
+class VistaListaDeAutores(generic.ListView):
+    model = Autor #sigue siendo de la clase-modelo Autor, pero en generic.ListView.
+
+class VistaDetalleDeAutor(generic.DetailView):
+    model = Autor
