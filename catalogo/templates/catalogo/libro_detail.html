@@ -5,17 +5,17 @@
 {% block content %}
   <h1>Título: {{ libro.titulo }}</h1>
 
-  <p><strong>Autor:</strong> <a href="">{{ libro.autor }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Autor:</strong> <a href="{% url 'autor-detail' libro.autor.pk %}">{{ libro.autor }}</a></p> <!-- Fíjese como se hace la referencia a la plantilla documento de la vista genérica autor_detail.html autor -->
   <p><strong>Resumen:</strong> {{ libro.resumen }}</p>
   <p><strong>ISBN:</strong> {{ libro.isbn }}</p>
   <p><strong>Lenguaje:</strong> {{ libro.lenguaje }}</p>
   <p><strong>Genre:</strong> {% for genero in libro.genero.all %} {{ genero }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 
-  <div style="margin-left:20px;margin-top:20px">
+  <div style="margin-left:20px;margin-top:20px"> <!--Si no uso bloque div igual me pone las barras horizontales: no sé de dónde salen, las pone django?.-->
     <h4>Copias:</h4>
-
+      
     {% for copy in libro.ejemplarespecifico_set.all %}<!--Sintaxis: note que copy es palabra reservada de django, un elemento para iterar sobre el conjunto de registros campoClaveForánea.nombreDelModeloEnMinúscula_set.all. ejemplarespecifico es el modelo en minúscula de EjemplarEspecifico (representa la tabla dónde se encuentra la clave principal(id), al igual que libro representa el campo libro de dicho modelo o tabla, que representa la tabla (modelo) de la clave externa o foránea, que sería el modelo Libro.-->
-    <hr>
+    <hr> <!-- esta hr es para poner la barra horizontal-->
     <p class="{% if copy.status == 'd' %}text-success{% elif copy.status == 'm' %}text-danger{% else %}text-warning{% endif %}">{{ copy.get_status_display }}</p><!-- Note que en .get_status_display, status es el campo de la clave principal en el modelo EjemplarEspecifico (ejemplarespecifico). La sintaxis es entonces: .get_nombreCampo_display. Note la proposición compuesta class="{% if copy.status ==... dentro de la etiqueta de marcado de apertura de parrafo.-->
     {% if copy.status != 'd' %}<p><strong>Para ser retornado el:</strong> {{copy.devolucion}}</p>{% endif %}
     <p><strong>Impresión:</strong> {{copy.impresion}}</p><!-- Por su puesto, la sintaxis para manejar los campos de item del modelo usado, expresada en la palabra reservada copy durante la iteración for, es: copy.nombreCampo. Aqui vemos copy.impresion usada como variable de plantilla {{copy.impresion}}-->

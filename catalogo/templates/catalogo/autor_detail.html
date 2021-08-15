@@ -3,9 +3,14 @@
 {% extends "base_generica.html" %}
 
 {% block content %}
-  <h1>Datos del autor:</h1>
+  <h1>Autor: {{ autor.apellido }},&nbsp{{ autor.nombre }} </h1>
+  <p>{{ autor.fecha_nacimiento }}, &nbsp{{autor.fecha_muerte}}</p>
+  <div style="margin-left:20px;margin-top:20px">
+  <h3>Libros:</h3>
+  {% for obra in autor.libro_set.all %}<!-- recordar que esta expresión se construye a partir del campo autor como clave foránea en la tabla (modelo, clase), Libro (referenciada aquí por convensión de sintaxis django en minúscula), expresión (autor.libro_set.all) que identifica a la colección de todos los registros (instancias, objetos) en la tabla Libros relacionados con el autor específicado por la url con id, que se usa para este documento.-->
+    <p><a href="">{{obra.titulo}}</a></p>
+    <p>{{obra.resumen}}</p>
 
-  <p><strong>Nombre:</strong> {{ autor.nombre }}</p>
-  <p><strong>Apellido:</strong> {{ autor.apellido }}</p>
-  
+  {% endfor %}
+  </div>
 {% endblock %}

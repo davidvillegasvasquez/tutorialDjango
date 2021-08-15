@@ -8,8 +8,8 @@
 
       {% for autor in autor_list %}<!--como dijimos arriba, _list es una palabra resevada de django -->
       <li>
-        <a href="{{ autor.get_absolute_url }}">{{ autor.apellido }}, &nbsp;{{autor.nombre}}&nbsp({{ autor.fecha_nacimiento }}, &nbsp;{{autor.fecha_muerte}})</a>
-<!-- recuerde, espacio en blanco en html es &nbsp; href="{{ autor.get_absolute_url }}" -->
+        <a href="{{ autor.get_absolute_url }}">{{ autor.apellido }}, &nbsp;{{autor.nombre}}&nbsp({{ autor.fecha_nacimiento }}, &nbsp{{autor.fecha_muerte}})</a>
+<!-- recuerde, espacio en blanco en html es &nbsp (el ; es prescindible) -->
 
       </li>
       {% endfor %}
