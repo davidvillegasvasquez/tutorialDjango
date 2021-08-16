@@ -34,6 +34,7 @@ class EjemplarEspecificoAdmin(admin.ModelAdmin):
     )
 
 # Register your models here.
+
 # admin.site.register(Libro)
 # admin.site.register(Autor)
 admin.site.register(Autor, AutorAdmin)
