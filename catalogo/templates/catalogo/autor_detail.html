@@ -1,15 +1,17 @@
 <!-- Recuerde: el nombre de esta plantilla vinculada a una vista genérica de tipo lista para el modelo Libro, debe tener el nombre nombreModeloMinúscula_list.html dónde _list es palabra reservada de django que indica que es plantilla asociada a dicho modelo en la vista genérica de este. Es una convención, arbitraria, puesto que django buscará automáticamente esta plantilla con el nombre específico nombreModeloMinúscula_list.html, previa invocaciónd de su vista genérica respectiva (VistaListaDeLibros en views.py. Para modificar este comportamiento automático, estandar por defecto, se debe referenciar dentro de la definición de la vista generica con algunas modificaciónes. Este es autor_detail.html-->
 
+<!-- Plantilla de la vista genérica VistaDetalleDeAutor(generic.DetailView), autor_detail.html-->
+
 {% extends "base_generica.html" %}
 
 {% block content %}
   <h1>Autor: {{ autor.apellido }},&nbsp{{ autor.nombre }} </h1>
   <p>{{ autor.fecha_nacimiento }}, &nbsp{{autor.fecha_muerte}}</p>
   <div style="margin-left:20px;margin-top:20px">
-  <h3>Libros escritos ({{ autor.libro_set.all.count }})</h3><!--Para la cantidad de libros u obras creadas por el autor, autor.libro_set.all.count representa un entero con el número de objetos en dicha colección. Como hemos dicho antes, el all es prescindible.-->
+  <h3>Libros escritos por el autor registrados en la bliblioteca ({{ autor.libro_set.all.count }})</h3><!--Para la cantidad de libros u obras creadas por el autor, autor.libro_set.all.count representa un entero con el número de objetos en dicha colección. Como hemos dicho antes, el all es prescindible.-->
 
   {% for obra in autor.libro_set.all %}<!--Recordar que esta expresión se construye a partir del campo autor como clave foránea en la tabla (modelo o clase), Libro (referenciada aquí por convensión de sintaxis django en minúscula), expresión (autor.libro_set.all) que identifica a la colección de todos los registros (instancias, objetos) en la tabla Libros relacionados con el autor específicado por la url con id, que se usa para este documento. Aquí el all si es inprescindible.-->
-    <p><a href="{{ obra.get_absolute_url }}">{{obra.titulo}}</a>&nbsp({{obra.ejemplarespecifico_set.all.count}}&nbspejemplares)</p><!--Note la referencia de hipertexto (href) en el ancla (a de anchor) para mandar a ver en detalle una obra o libro del autor, renderizando su plantilla respeciva (libro_detail.html), apuntado por la variable de plantilla, obra.titulo. Y note con atención como obtengo la cantidad total de ejemplares específicos para dicha obra o libro en particular del autor en cuestión que hay actualmente en la biblioteca.-->
+    <p><a href="{{ obra.get_absolute_url }}">{{obra.titulo}}</a>&nbsp({{obra.ejemplarespecifico_set.all.count}} &nbsp copias en la biblioteca)</p><!--Note la referencia de hipertexto (href) en el ancla (a de anchor) para mandar a ver en detalle una obra o libro del autor, renderizando su plantilla respeciva (libro_detail.html), apuntado por la variable de plantilla, obra.titulo. Y note con atención como obtengo la cantidad total de ejemplares específicos para dicha obra o libro en particular del autor en cuestión que hay actualmente en la biblioteca.-->
     <p>{{obra.resumen}}</p>
 
   {% endfor %}

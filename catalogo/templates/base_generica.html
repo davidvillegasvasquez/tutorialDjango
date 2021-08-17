@@ -33,7 +33,7 @@
       <div class="col-sm-10 ">
       {% block content %}{% endblock %}
 
-<!-- Introducimos código para hacer paginación en el bloque de contenido (block content: -->
+<!-- Introducimos el código para hacer paginación en el bloque de contenido (block content. Debe ir aquí, en el bloque genérico principal, pues debe ser una opción (if is_paginated) común en todos los documentos heredados de este: -->
 	{% block pagination %}
   {% if is_paginated %}
       <div class="pagination">
