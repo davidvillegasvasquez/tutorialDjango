@@ -24,13 +24,11 @@ class Libro(models.Model):
 
     autor = models.ForeignKey('Autor', on_delete=models.SET_NULL, null=True)
     # ForeignKey, ya que un libro tiene un solo autor, pero el mismo autor puede haber escrito muchos libros.
-    # 'Author' es un string, en vez de un objeto, porque la clase Author aún no ha sido declarada.
-
+    # 'Autor' es un string no un objeto.
     resumen = models.TextField(max_length=1000, help_text="Ingrese una breve descripción del libro")
     isbn = models.CharField('ISBN',max_length=13, help_text='hasta 13 Caracteres <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
     genero = models.ManyToManyField(Genero, help_text="seleccione un genero para este libro.")
     # ManyToManyField, porque un género puede contener muchos libros y un libro puede cubrir varios géneros.
-    # La clase Genre ya ha sido definida, entonces podemos especificar el objeto arriba.
 
     lenguaje = models.ForeignKey('Lenguaje', on_delete=models.SET_NULL, null=True)
 
@@ -52,11 +50,11 @@ class Libro(models.Model):
         """
         return reverse('libro-detail', args=[str(self.id)])
 
-import uuid # Requerida para las instancias de libros únicos
+import uuid # Requerida para las instancias de libros únicos.
 
 class EjemplarEspecifico(models.Model):
     """
-    Modelo que representa una copia específica de un libro (i.e. que puede ser prestado por la biblioteca).
+    Modelo que representa una copia específica de un libro (Una copia que puede ser prestada por la biblioteca).
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID único para este libro particular en toda la biblioteca")
     libro = models.ForeignKey('Libro', on_delete=models.SET_NULL, null=True)

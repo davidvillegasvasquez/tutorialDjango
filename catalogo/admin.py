@@ -1,15 +1,15 @@
 from django.contrib import admin
 from .models import Autor, Genero, Libro, EjemplarEspecifico, Lenguaje
 
-# Primero se deben definir los modelos admin para luego registrarlos abajo, si no dara excepción de haber puesto la carreta delante de los caballos.
+# Primero se deben definir los modelos admin para luego registrarlos abajo, si no dara excepción por haber "puesto la carreta delante de los caballos".
 
 class EjemplarEspecificoInline(admin.TabularInline):
     model = EjemplarEspecifico
 
 class AutorAdmin(admin.ModelAdmin):
-    # Para mostrar en columnas los campos de la tabla Autor (configurar la vista de lista usando list_display:
+    # Para mostrar en columnas los campos de la tabla Autor (configurar la vista de lista usando list_display):
     #list_display = ('apellido', 'nombre', 'fecha_nacimiento', 'fecha_muerte')
-    # El atributo fields lista solo los campos que se van a desplegar en el formulario, en orden. Entre paréntesis los pone en vertical:
+    # El atributo fields,lista sólo los campos que se van a desplegar en el formulario, en orden. Los que están entre paréntesis los pone en columna(vertical):
     fields = ['nombre', 'apellido', ('fecha_nacimiento', 'fecha_muerte')]
     #El atributo exclude excluye campos, claro si se usa no puede ser incluido en un fields:
     #exclude = ['nombre']
@@ -35,7 +35,7 @@ class EjemplarEspecificoAdmin(admin.ModelAdmin):
 
 # Register your models here.
 
-# admin.site.register(Libro)
+# admin.site.register(Libro) #Como usé decoradores para registrar este módelo, no hace falta esta línea.
 # admin.site.register(Autor)
 admin.site.register(Autor, AutorAdmin)
 admin.site.register(Genero)

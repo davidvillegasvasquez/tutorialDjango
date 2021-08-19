@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalogo.apps.CatalogoConfig',
-]
+] #Aquí registramos nuestra aplicación catálogo (catalogo.apps.CatalogoConfig)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
