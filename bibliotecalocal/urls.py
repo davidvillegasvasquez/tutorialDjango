@@ -24,6 +24,12 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/catalogo/', permanent=True)),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+#Add Django site authentication urls (for login, logout, password management)
+
+urlpatterns += [
+    path('cuentas/', include('django.contrib.auth.urls')),
+] #Es lo mismo que agregarla arriba, entre los corchetes.
+
 
 #El path('', RedirectView.as_view... tenía un slash entre las comillas, lo cual me arrojaba la excepción:
 # WARNINGS: ?: (urls.W002) Your URL pattern '/' has a route beginning with a '/'. Remove this slash as it is 

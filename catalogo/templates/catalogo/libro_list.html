@@ -1,3 +1,6 @@
+<!-- Recuerde: el nombre de esta plantilla vinculada a una vista genérica de tipo list para el modelo Libro, debe tener el nombre nombreModeloMinúscula_list.html, dónde _list es palabra reservada de django que indica que es plantilla asociada a dicho modelo en la vista genérica de este. Es una convención de django, puesto que django buscará automáticamente esta plantilla con el nombre específico nombreModeloMinúscula_list.html, en el directorio o carpeta con el mismo nombre de la aplicación -en este caso, catalogo-, que está dentro de la carpeta con el nombre reservado templates de la aplicación, previa invocación de su vista genérica respectiva (VistaListaDeLibros) en views.py. Para modificar este comportamiento automático, estandar por defecto, se debe referenciar dentro de la definición de la vista genérica con algunas modificaciones. -->
+
+
 <!-- Plantilla de la vista genérica VistaListaDeLibros(generic.ListView), libro_list.html-->
 {% extends "base_generica.html" %}
 
@@ -7,7 +10,7 @@
     {% if libro_list %} <!-- libro_list es una variable de plantilla del tipo nombre_del_modelo_list (_list es un calificador reservado de django). -->
     <ul>
 
-      {% for libro in libro_list %}<!--como dijimos arriba, _list es una palabra resevada de django -->
+      {% for libro in libro_list %}<!--como dijimos arriba, _list es una palabra resevada de django, no arbitraria del usuario. -->
       <li>
         <a href="{{ libro.get_absolute_url }}">{{ libro.titulo }}</a> ({{libro.autor}})
       </li>

@@ -5,7 +5,7 @@
 {% block content %}
     <h1>Lista de Autores</h1>
 
-    {% if autor_list %} <!-- autor_list es una variable de plantilla del tipo nombre_del_modelo_list (_list es un calificador reservado de django). -->
+    {% if autor_list %} <!-- autor_list es una variable de plantilla del tipo nombre_del_modelo_list (_list es un calificador reservado de django, no arbitrario). -->
     <ul>
 
       {% for autor in autor_list %}<!--como dijimos arriba, _list es una palabra resevada de django -->
