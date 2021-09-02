@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from datetime import date
 
 # Create your models here.
 class Genero(models.Model):
@@ -54,21 +56,22 @@ import uuid # Requerida para las instancias de libros únicos.
 
 class EjemplarEspecifico(models.Model):
     """
-    Modelo que representa una copia específica de un libro (Una copia que puede ser prestada por la biblioteca).
+    Modelo que representa una copia específica de un libro (Una copia que puede ser prestada por la biblioteca). Como cada clae es un modelo, que a su vez representa una tabla en al base de datos, por lo tanto puede tener muchos atributos-campos tipo objetos models.ForeingKey, pero sólo uno tipo primary_key, bajo la formo de objeto models.UUIDField. Note que el identificador-apuntador hacia este objeto se torna al color tipo clase o función.
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID único para este libro particular en toda la biblioteca")
     libro = models.ForeignKey('Libro', on_delete=models.SET_NULL, null=True)
     impresion = models.CharField(max_length=200)
     devolucion = models.DateField(null=True, blank=True)
-
-    LOAN_STATUS = (
+    prestatario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True) #Note que el argumento de primero en el objeto/clase, models.ForeingKey, User, representa una tabla o clase implicita de django.
+    campoConstante = 'xxx' #Podemos meter un atributo-campo como una constante simbólica. Todos los registros o filas tendrán este valor en su campo o columna.
+    PRESTAMO_STATUS = (
         ('m', 'Mantenimiento'),
         ('p', 'Prestado'),
         ('d', 'Disponible'),
         ('r', 'Reservado'),
     )
 
-    status = models.CharField(max_length=1, choices=LOAN_STATUS, blank=True, default='m', help_text='Disponibilidad del libro')
+    status = models.CharField(max_length=1, choices=PRESTAMO_STATUS, blank=True, default='m', help_text='Estatus en que se encuentra actualmente el ejemplar específico.')
 
     class Meta:
         ordering = ["devolucion"]
@@ -79,6 +82,12 @@ class EjemplarEspecifico(models.Model):
         String para representar el Objeto del Modelo
         """
         return '%s (%s)' % (self.id, self.libro.titulo)
+
+    @property
+    def esta_atrasado(self):
+        if self.devolucion and date.today() > self.devolucion:
+            return True
+        return False
 
 class Autor(models.Model):
     """
@@ -109,4 +118,5 @@ class Lenguaje(models.Model):
     def __str__(self):
         """String for representing the Model object (in Admin site etc.)"""
         return self.nombre
+
 

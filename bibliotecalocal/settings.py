@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
+TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.request',)
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'catalogo.apps.CatalogoConfig',
+    'catalogo.apps.CatalogoConfig', 
 ] #Aquí registramos nuestra aplicación catálogo (catalogo.apps.CatalogoConfig)
 
 MIDDLEWARE = [
@@ -67,7 +69,7 @@ TEMPLATES = [
             ],
         },
     },
-] #Note que el nombre de la carpeta o directorio de las plantillas de entrada en la aplicación, puden ser arbitrarios. En este caso le puse "plantillasEntrada".
+] #Note el nombre de la carpeta o directorio de las plantillas de entrada en la aplicación. Pueden ser arbitrarios. En este caso le puse "plantillasEntrada".
 
 WSGI_APPLICATION = 'bibliotecalocal.wsgi.application'
 
@@ -122,5 +124,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
+# Por el comentario de arriba, es que accounts es palabra reservada en django: no podemos usar "cuentas", porque si bien funcionará para todo los otros escenarios, no nos dará /accounts/profile/ para redireccionar en caso de que el usuario no esté logueado.
 LOGIN_REDIRECT_URL = '/'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

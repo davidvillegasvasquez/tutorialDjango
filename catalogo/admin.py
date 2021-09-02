@@ -22,20 +22,20 @@ class LibroAdmin(admin.ModelAdmin):
 
 @admin.register(EjemplarEspecifico)
 class EjemplarEspecificoAdmin(admin.ModelAdmin):
-    list_display = ('libro', 'status', 'devolucion', 'id')  #Si desconecto esta línea comentandola, solo me pondrá el títula de la columna "Ejemplar Específico", y los item con su id y nombre del libro pegados.
+    list_display = ('libro', 'status', 'prestatario', 'campoConstante', 'devolucion', 'id')  #Si desconecto esta línea comentandola, solo me pondrá el títula de la columna "Ejemplar Específico", y los item con su id y nombre del libro pegados.
     list_filter = ('status', 'devolucion')
     fieldsets = (
         (None, {
             'fields': ('libro', 'impresion', 'id')
         }),
         ('Availability', {
-            'fields': ('status', 'devolucion')
+            'fields': ('status', 'devolucion', 'prestatario')
         }),
-    )
+    ) # La propiedad Availability se refiere a que la columna del campo en la plantilla no está bloqueada, inhabilitada. Aquí no importa el orden en que esté en la lista, pues es un atributo, no un objeto-cadena visible en la pantalla.
 
 # Register your models here.
 
-# admin.site.register(Libro) #Como usé decoradores para registrar este módelo, no hace falta esta línea.
+# admin.site.register(Libro) #Como usé decoradores para registrar este módelo, no hace falta esta línea. Puse "la carreta delante de los caballos".
 # admin.site.register(Autor)
 admin.site.register(Autor, AutorAdmin)
 admin.site.register(Genero)

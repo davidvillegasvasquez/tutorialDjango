@@ -21,14 +21,20 @@
     <div class="row">
       <div class="col-sm-2">
       {% block sidebar %}
+    
       <ul class="sidebar-nav">
 <!-- A fuerza bruta el link para Home sería /catalogo peró no sería ni flexible ni robusto-->
           <li><a href="{% url 'index' %}">Home</a></li>
           <li><a href="{% url 'libros' %}">Todos los libros</a></li>
           <li><a href="{% url 'autores' %}">Todos los autores</a></li>
-          <li><a href="{% url 'login' %}">Ir a cuentas</a></li>
-          <li><a href="/admin">Ir a admin</a></li><!-- Y así accedo a un documento externo a la app dentro del mismo proyecto (por lo menos para admin). No sirve usando etiquetas de llaves y %: parece que sólo sirven para las plantillas de aplicaciones, y no para el administrador u otra dependencia builtin de django, que constituyen la entrada principal a través de las urls de la aplicación (bibliotecalocal/bibliotecalocal/urls.py-->
-          <li><a href="">Cerrar sesión</a></li>
+      {% if user.is_authenticated %}<!-- Mostramos este contenido sólo si está bajo una sesión abierta:-->
+          <li>Usuario: {{ user.get_username }}</li>
+          <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
+      {% else %}
+          <li><a href="{% url 'login' %}">Abrir sesión</a></li>
+          <li><a href="/admin">Ir a admin</a></li>         
+      {% endif %}
+
       </ul>
      {% endblock %}
       </div>

@@ -2,6 +2,7 @@ from typing import cast
 from django.shortcuts import render
 from .models import Libro, Autor, EjemplarEspecifico, Genero
 from django.views import generic
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 def index(request):
@@ -44,8 +45,21 @@ class VistaListaDeLibros(generic.ListView):
 class VistaDetalleDeLibro(generic.DetailView):
     model = Libro  #Mismo modelo Libro, distinto tipo de vista genérica (generic.DetailView)
 
+#Con las características heredadas de LoginRequiredMixin (sólo para vistas basadas en clases), restringimos el acceso a esta vista según esté abierta una sesión o no:
+#class VistaListaDeAutores(LoginRequiredMixin ,generic.ListView):
 class VistaListaDeAutores(generic.ListView):
-    model = Autor 
+    model = Autor    
 
 class VistaDetalleDeAutor(generic.DetailView):
     model = Autor #sigue siendo de la clase-modelo Autor, pero heredera de la clase generic.DetailView
+
+#VistaListaDeLibrosPrestadosPorUsuario = LoanedBooksByUserListView
+class VistaListaDeLibrosPrestadosPorUsuario(LoginRequiredMixin, generic.ListView):
+    """Clase generica basada en vista tipo lista, para los libros prestados al usuario actual."""
+    model = EjemplarEspecifico
+    template_name ='catalogo/LibrosPrestadosAlUsuario.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
+    paginate_by = 10
+
+    def get_queryset(self):
+        return EjemplarEspecifico.objects.filter(prestatario=self.request.user).filter(status__exact='p').order_by('devolucion')
+

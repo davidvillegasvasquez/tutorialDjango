@@ -1,7 +1,7 @@
 {% extends "base_generica.html" %}
 
-{% block content %}
-
+  {% block content %}
+  
   {% if form.errors %}
     <p>Tu nombre de usuario y clave no coinciden. Por favor, intente de nuevo.</p>
   {% endif %}
@@ -33,5 +33,5 @@
 
   {# Assumes you setup the password_reset view in your URLconf #}
   <p><a href="{% url 'password_reset' %}">Olvidó el password?</a></p>
-
+  
 {% endblock %}

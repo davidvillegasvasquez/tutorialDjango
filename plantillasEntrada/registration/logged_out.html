@@ -1,10 +1,11 @@
-<!-- Note que esta plantilla la tenemos que ubicar en un directorio a nivel de raíz, con nombre arbitrario (plantillasEntrada), a diferencia de las plantillas de la aplicación catalogo (templates). El nombre de su subdirectorio o subcarpeta, registration, y los nombres de las plantillas, logged_out y loged, son por convención de django, no pueden ser arbitrarios. -->
+<!-- Note que esta plantilla la tenemos que ubicar en un directorio a nivel de raíz, con nombre arbitrario por el usuario - en este ejemplo, plantillasEntrada-, a diferencia de las plantillas de la aplicación catalogo (carpeta templates). El nombre de su subdirectorio o subcarpeta, registration, y los nombres de las plantillas, logged_out y loged, son por convención de django, no pueden ser arbitrarios. Son plantillas automáticas de django, son de vistas implicitas, builtins, y están dedicadas a la administración de la cuenta de los usuarios.-->
 
 {% extends "base_generica.html" %}
 
 {% block content %}
-  <p>Te has salido!</p>
-  <a href="{% url 'login'%}">Click aquí para logearte de nuevo.</a>
+ 
+  <p>Sin sesión abierta. Si desea abrir una, cliquee en el enlace abajo:</p>
+  <a href="{% url 'login'%}">Click aquí para logearte.</a>
 {% endblock %}
 
 <!-- La plantilla con nombre reservado, no arbitrario, logged_out.html, dentro de la carpeta con nombre igualmente reservado por django, registration, nos saca de la sesión en la que se haya logeado cualquier usuario de la aplicación. -->
