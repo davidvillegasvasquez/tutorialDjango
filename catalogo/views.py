@@ -3,6 +3,7 @@ from django.shortcuts import render
 from .models import Libro, Autor, EjemplarEspecifico, Genero
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 # Create your views here.
 
 def index(request):
@@ -54,12 +55,23 @@ class VistaDetalleDeAutor(generic.DetailView):
     model = Autor #sigue siendo de la clase-modelo Autor, pero heredera de la clase generic.DetailView
 
 #VistaListaDeLibrosPrestadosPorUsuario = LoanedBooksByUserListView
-class VistaListaDeLibrosPrestadosPorUsuario(LoginRequiredMixin, generic.ListView):
+class VistaDeLosUsuarios(LoginRequiredMixin, generic.ListView):
     """Clase generica basada en vista tipo lista, para los libros prestados al usuario actual."""
+    #permission_required = 'catalogo.permiso_usuario' #No requiere ningún permiso.
     model = EjemplarEspecifico
-    template_name ='catalogo/LibrosPrestadosAlUsuario.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
+    template_name ='catalogo/vistausuarios.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
     paginate_by = 10
 
     def get_queryset(self):
         return EjemplarEspecifico.objects.filter(prestatario=self.request.user).filter(status__exact='p').order_by('devolucion')
 
+class VistaDeLosBibliotecarios(PermissionRequiredMixin, generic.ListView):
+    """Clase generica basada en vista tipo lista, para los libros prestados al usuario actual."""
+    
+    model = EjemplarEspecifico
+    permission_required = 'catalogo.can_mark_retornado' #Vista sólo ejecutable para usuarios.
+    template_name ='catalogo/vistabibliotecarios.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
+    paginate_by = 10
+
+    def get_queryset(self):
+        return EjemplarEspecifico.objects.filter(status__exact='p').order_by('devolucion')

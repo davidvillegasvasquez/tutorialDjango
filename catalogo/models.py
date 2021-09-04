@@ -42,13 +42,13 @@ class Libro(models.Model):
 
     def __str__(self):
         """
-        String que representa al objeto Book
+        String que representa al objeto Libro
         """
         return self.titulo
 
     def get_absolute_url(self):
         """
-        Devuelve el URL a una instancia particular de Book
+        Devuelve el URL a una instancia particular de Libro
         """
         return reverse('libro-detail', args=[str(self.id)])
 
@@ -62,7 +62,7 @@ class EjemplarEspecifico(models.Model):
     libro = models.ForeignKey('Libro', on_delete=models.SET_NULL, null=True)
     impresion = models.CharField(max_length=200)
     devolucion = models.DateField(null=True, blank=True)
-    prestatario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True) #Note que el argumento de primero en el objeto/clase, models.ForeingKey, User, representa una tabla o clase implicita de django.
+    prestatario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True) #Note que el argumento de primero en la instanciación del objeto/clase, models.ForeingKey, User, representa una tabla o clase implicita de django, consistente en todos los usuarios de la aplicación django.
     campoConstante = 'xxx' #Podemos meter un atributo-campo como una constante simbólica. Todos los registros o filas tendrán este valor en su campo o columna.
     PRESTAMO_STATUS = (
         ('m', 'Mantenimiento'),
@@ -75,7 +75,7 @@ class EjemplarEspecifico(models.Model):
 
     class Meta:
         ordering = ["devolucion"]
-        permissions = (("puede_marcar_retornado", "Poner como devuelto"),)
+        permissions = (("can_mark_retornado", "Coloca el libro como retornado"),)
 
     def __str__(self):
         """
@@ -84,7 +84,7 @@ class EjemplarEspecifico(models.Model):
         return '%s (%s)' % (self.id, self.libro.titulo)
 
     @property
-    def esta_atrasado(self):
+    def esta_atrasado(self): #Método para determinar si está atrasado en la devolución.
         if self.devolucion and date.today() > self.devolucion:
             return True
         return False

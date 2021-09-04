@@ -1,0 +1,21 @@
+<!-- Plantilla ejemplarespecifico_list_prestado_user.html-->
+
+{% extends "base_generica.html" %}
+
+{% block content %}
+    <h1>Libros Prestados a {{user.get_username}}:</h1>
+
+    {% if ejemplarespecifico_list %}
+    <ul>
+
+      {% for instancia in ejemplarespecifico_list %}
+      <li class="{% if instancia.esta_atrasado %}text-danger{% endif %}">
+        <a href="{% url 'libro-detail' instancia.libro.pk %}">{{instancia.libro.titulo}}</a> ({{ instancia.devolucion }})
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>No hay libros prestados.</p>
+    {% endif %}
+{% endblock %}
