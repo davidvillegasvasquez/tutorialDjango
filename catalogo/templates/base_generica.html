@@ -32,8 +32,8 @@
       <ul class="sidebar-nav">
       {% if user.is_authenticated %}
           <li>Usuario: {{ user.get_username }}</li>
-          <li><a href="{% url 'LibrosUsuarios' %}">Libros en manos de este usuario</a></li>
-          <li><a href="{% url 'logout' %}?next={{request.path}}">Cerrar sesión</a></li>
+          <li><a href="{% url 'VistaUsuarios' %}">Libros en manos de este usuario</a></li>
+          <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
       {% else %}
           <li><a href="{% url 'login' %}?next={{request.path}}">Abrir sesión</a></li>
           <li><a href="/admin">Ir a admin</a></li>         
@@ -44,14 +44,17 @@
       {% if user.is_staff %}
           <hr> <!-- horizontal rule -->
           <ul class="sidebar-nav">
-	  <li>user.is_staff={{ user.is_staff }}</li>
-          <li>Usuario Staff</li>
-          {% if perms.catalogo.can_mark_retornado %}
-              <li><a href="{% url 'LibrosBibliotecarios' %}">Todos los prestados</a></li>
-          {% endif %}
+          <li>Usuario tipo Staff</li><!-- Estructura selectiva para no hacer dos grupos de bibliotecarios (los que tienen sólo el permiso1, como los que tienen los dos: -->
+          {% if perms.catalogo.permisoBibliotecario1 %}
+              <li><a href="{% url 'VistaBibliotecarios1' %}">Plantilla bibliotecario con sólo permiso de nivel 1</a></li>
+	      {% if perms.catalogo.permisoBibliotecario2 %}
+                 <li><a href="{% url 'VistaBibliotecarios2' %}">Página bibliotecario si tiene ambos permisos nivel 1 y 2</a></li>
+              {% endif %}
+          {% endif %} <!-- Fin del bloque if perms.catalogo.permisoBibliotecario1  -->
+          
           </ul>
-      <!--Nota: desperdicié un día completo, buscando por qué perms.catalogo.can_mark_retornado tenía el valor de false en todos los escenarios: era porque no había habilitado al tipo de usuario en ningún tipo de atribución, desde el administrador de django. upsss!!! -->  
-      {% endif %}
+      <!--Nota: desperdicié un día completo, buscando por qué perms.catalogo. tenía el valor de false en todos los escenarios: era porque no había habilitado al tipo de usuario en ningún tipo de atribución, desde el administrador de django. upsss!!! -->  
+      {% endif %} <!-- Fin del bloque if user.is_staff -->
       {% endblock %}<!-- Fin del bloque side bar -->
 
       </div>

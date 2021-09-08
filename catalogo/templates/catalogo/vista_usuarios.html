@@ -1,0 +1,21 @@
+<!-- Plantilla vistausuarios.html-->
+
+{% extends "base_generica.html" %}
+
+{% block content %}
+    <h1>Libros actualmente en manos de {{user.get_username}}:</h1>
+<!-- Primero se determina si se generó una lista de ejemplares específicos relacionados a este usuario en particular que inició sesión:-->
+    {% if ejemplarespecifico_list %}
+    <ul>
+
+      {% for instancia in ejemplarespecifico_list %}
+      <li>
+        <a href="{% url 'libro-detail' instancia.libro.pk %}">{{instancia.libro.titulo}}</a> - <font class="{% if instancia.esta_atrasado %}text-danger{% endif %}">{{ instancia.devolucion }}</font> - Impresión:{{instancia.impresion}} - Id:{{instancia.id}}
+      </li>
+      {% endfor %}
+    </ul>
+
+    {% else %}
+      <p>El usuario {{user.get_username}} no tiene actualmente ningún libro de la biblioteca en sus manos.</p>
+    {% endif %}
+{% endblock %}

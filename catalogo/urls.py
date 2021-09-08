@@ -7,9 +7,13 @@ urlpatterns = [
 #Como VistaDetalleDeLibro.as_view() es una vista genérica que depende del url 'libro', me exige que name sea libro-detail, dónde -detail es reservado por django y libro como minúscula del modelo Libro.
 
 urlpatterns += [
-    path('librosUsuario/', views.VistaDeLosUsuarios.as_view(), name='LibrosUsuarios'),
+    path('librosUsuario/', views.VistaEjemplaresParaLosUsuarios.as_view(), name='VistaUsuarios'),
+] 
+
+urlpatterns += [
+    path('bibliotecariosPermiso1/', views.VistaEjemplaresParaBibliotecarios1.as_view(), name='VistaBibliotecarios1'),
 ]
 
 urlpatterns += [
-    path('todosLosPrestados/', views.VistaDeLosBibliotecarios.as_view(), name='LibrosBibliotecarios'),
+    path('bibliotecariosPermiso2/', views.VistaEjemplaresParaBibliotecarios2.as_view(), name='VistaBibliotecarios2'),
 ]

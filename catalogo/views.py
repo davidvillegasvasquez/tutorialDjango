@@ -54,24 +54,37 @@ class VistaListaDeAutores(generic.ListView):
 class VistaDetalleDeAutor(generic.DetailView):
     model = Autor #sigue siendo de la clase-modelo Autor, pero heredera de la clase generic.DetailView
 
-#VistaListaDeLibrosPrestadosPorUsuario = LoanedBooksByUserListView
-class VistaDeLosUsuarios(LoginRequiredMixin, generic.ListView):
-    """Clase generica basada en vista tipo lista, para los libros prestados al usuario actual."""
+
+class VistaEjemplaresParaLosUsuarios(LoginRequiredMixin, generic.ListView):
+    """Clase generica basada en vista tipo lista, para los libros prestados al usuario actual. Su plantilla es vistausuarios.html"""
     #permission_required = 'catalogo.permiso_usuario' #No requiere ningún permiso.
     model = EjemplarEspecifico
-    template_name ='catalogo/vistausuarios.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
+    template_name ='catalogo/vista_usuarios.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
     paginate_by = 10
 
-    def get_queryset(self):
+    def get_queryset(self):#Se define lo 
         return EjemplarEspecifico.objects.filter(prestatario=self.request.user).filter(status__exact='p').order_by('devolucion')
 
-class VistaDeLosBibliotecarios(PermissionRequiredMixin, generic.ListView):
-    """Clase generica basada en vista tipo lista, para los libros prestados al usuario actual."""
+class VistaEjemplaresParaBibliotecarios1(PermissionRequiredMixin, generic.ListView):
+    """Clase generica basada en vista tipo lista, para los bibliotecarios"""
     
     model = EjemplarEspecifico
-    permission_required = 'catalogo.can_mark_retornado' #Vista sólo ejecutable para usuarios.
-    template_name ='catalogo/vistabibliotecarios.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
+    permission_required = 'catalogo.permisoBibliotecario1' #Vista sólo bibliotecarios con permiso nivel 1 para estos (mostrará la plantilla referenciada abajo).
+    template_name ='catalogo/vista_bibliotecarios1.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
     paginate_by = 10
 
     def get_queryset(self):
         return EjemplarEspecifico.objects.filter(status__exact='p').order_by('devolucion')
+
+class VistaEjemplaresParaBibliotecarios2(PermissionRequiredMixin, generic.ListView):
+    """Una clase especial para este caso."""
+    
+    model = EjemplarEspecifico
+    permission_required = 'catalogo.permisoBibliotecario2' 
+    template_name ='catalogo/vista_bibliotecarios2.html' #El nombre de la plantilla aquí es arbitrario por el usuario.
+"""
+    paginate_by = 10
+
+    def get_queryset(self):
+        return EjemplarEspecifico.objects.filter(status__exact='p').order_by('devolucion')
+"""

@@ -62,7 +62,7 @@ class EjemplarEspecifico(models.Model):
     libro = models.ForeignKey('Libro', on_delete=models.SET_NULL, null=True)
     impresion = models.CharField(max_length=200)
     devolucion = models.DateField(null=True, blank=True)
-    prestatario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True) #Note que el argumento de primero en la instanciación del objeto/clase, models.ForeingKey, User, representa una tabla o clase implicita de django, consistente en todos los usuarios de la aplicación django.
+    prestatario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True) #Note que el argumento de primero en la instanciación del objeto/clase, models.ForeingKey, User, representa una tabla o clase implicita de django, consistente en todos los usuarios de la aplicación django, guardados en la base de datos.
     campoConstante = 'xxx' #Podemos meter un atributo-campo como una constante simbólica. Todos los registros o filas tendrán este valor en su campo o columna.
     PRESTAMO_STATUS = (
         ('m', 'Mantenimiento'),
@@ -75,7 +75,7 @@ class EjemplarEspecifico(models.Model):
 
     class Meta:
         ordering = ["devolucion"]
-        permissions = (("can_mark_retornado", "Coloca el libro como retornado"),)
+        permissions = (("permisoBibliotecario1", "Permiso tipo 1 sólo para bibliotecarios"), ("permisoBibliotecario2", "Permiso tipo 2 sólo para bibliotecarios"), ("unPermisoX", "Un permiso de hacer x cosa a x usuario."), )
 
     def __str__(self):
         """
@@ -83,8 +83,8 @@ class EjemplarEspecifico(models.Model):
         """
         return '%s (%s)' % (self.id, self.libro.titulo)
 
-    @property
-    def esta_atrasado(self): #Método para determinar si está atrasado en la devolución.
+    #@property  #No se para que sirve este decorador, de hecho está comentado y no pasó nada.
+    def esta_atrasado(self): #Método-atributo para determinar si está atrasado en la devolución.
         if self.devolucion and date.today() > self.devolucion:
             return True
         return False
