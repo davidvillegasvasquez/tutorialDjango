@@ -31,7 +31,7 @@
       <!--SubBloque sidebar de lista desordenada si el usuario es cliente normal:-->
       <ul class="sidebar-nav">
       {% if user.is_authenticated %}
-          <li>Usuario: {{ user.get_username }}</li>
+          <li>Usuario: {{ user.get_username }}</li><!-- en variables de plantillas, el método get_username() no lleva paréntesis. -->
           <li><a href="{% url 'VistaUsuarios' %}">Libros en manos de este usuario</a></li>
           <li><a href="{% url 'logout' %}">Cerrar sesión</a></li>
       {% else %}
@@ -44,16 +44,17 @@
       {% if user.is_staff %}
           <hr> <!-- horizontal rule -->
           <ul class="sidebar-nav">
-          <li>Usuario tipo Staff</li><!-- Estructura selectiva para no hacer dos grupos de bibliotecarios (los que tienen sólo el permiso1, como los que tienen los dos: -->
+	  <li>{{ user.groups.all }}</li>
+          <li>Usuario tipo Staff:</li><!-- Estructura selectiva para no hacer dos grupos de bibliotecarios (los que tienen sólo el permiso1, como los que tienen los dos: -->
           {% if perms.catalogo.permisoBibliotecario1 %}
               <li><a href="{% url 'VistaBibliotecarios1' %}">Plantilla bibliotecario con sólo permiso de nivel 1</a></li>
 	      {% if perms.catalogo.permisoBibliotecario2 %}
-                 <li><a href="{% url 'VistaBibliotecarios2' %}">Página bibliotecario si tiene ambos permisos nivel 1 y 2</a></li>
+                  <li><a href="{% url 'VistaBibliotecarios2' %}">Página para usuarios si tiene ambos permisos bibliotecarios nivel 1 y 2, independientemente al grupo al que pertenece</a></li>
               {% endif %}
           {% endif %} <!-- Fin del bloque if perms.catalogo.permisoBibliotecario1  -->
           
           </ul>
-      <!--Nota: desperdicié un día completo, buscando por qué perms.catalogo. tenía el valor de false en todos los escenarios: era porque no había habilitado al tipo de usuario en ningún tipo de atribución, desde el administrador de django. upsss!!! -->  
+      <!--Nota: desperdicié un día completo, buscando por qué perms.catalogo.permisoBibliotecario1 retornaba el valor de false en todos los escenarios para el usuario en cuestión: era porque no había asignado a dicho usuario/grupo evaluado, el permiso correspondiente desde el recuadro permissions de la página Change group del sitio de administración django. upsss!!! -->  
       {% endif %} <!-- Fin del bloque if user.is_staff -->
       {% endblock %}<!-- Fin del bloque side bar -->
 

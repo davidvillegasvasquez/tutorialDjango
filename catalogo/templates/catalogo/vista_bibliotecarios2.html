@@ -3,6 +3,16 @@
 {% extends "base_generica.html" %}
 
 {% block content %}
-    <p>Esta sería la vista de plantilla para los bibliotecarios que tienen tanto el permiso nivel 1, como el nivel 2.<p>
+    <p>El usuario {{ user.get_username }} 
+       {% if auth.Group is not None %}
+         pertenece al grupo 
+         {% for grupo in user.groups.all %}
+           {{ grupo.name }}, 
+         {% endfor %}
+       {% else %}
+         no pertenece a ningún grupo,
+       {% endif %}
+       y tienen tanto el permiso nivel 1, como el nivel 2.<p>
 
 {% endblock %}
+<!-- Todo este código a nivel de la plantilla es mucho menos eficiente que implementarlo a nivel de las vista en una función. Se hace aquí solamente con fines didácticos, para esta práctica con programación de plantillas. -->

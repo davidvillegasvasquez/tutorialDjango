@@ -76,7 +76,7 @@ class EjemplarEspecifico(models.Model):
     class Meta:
         ordering = ["devolucion"]
         permissions = (("permisoBibliotecario1", "Permiso tipo 1 sólo para bibliotecarios"), ("permisoBibliotecario2", "Permiso tipo 2 sólo para bibliotecarios"), ("unPermisoX", "Un permiso de hacer x cosa a x usuario."), )
-
+#Recuerde que al crear permisos, estos no se incorporarán automáticamente al grupo o usuario particular al cual deseamos agregarlo: apareceran como nuevos permisos de la forma, específicamente para este ejemplo, catalogo | ejemplar especifico | Permiso tipo 1 sólo para bibliotecarios, en el recuadro permissions de la página Change group del sitio de administración django. Igual para los otros permisos que se definan. 
     def __str__(self):
         """
         String para representar el Objeto del Modelo
