@@ -1,4 +1,4 @@
-<!-- Plantilla vista_bibliotecarios.html-->
+<!-- Plantilla vista_bibliotecarios1.html-->
 
 {% extends "base_generica.html" %}
 
@@ -10,7 +10,9 @@
 
       {% for instancia in ejemplarespecifico_list %}
       <li>
-        <a href="{% url 'libro-detail' instancia.libro.pk %}">{{instancia.libro.titulo}}</a> <font class="{% if instancia.esta_atrasado %}text-danger{% endif %}">({{ instancia.devolucion }})</font>, al usuario: {{ instancia.prestatario.username }}
+        <a href="{% url 'libro-detail' instancia.libro.pk %}">{{instancia.libro.titulo}}</a> <font class="{% if instancia.esta_atrasado %}text-danger{% endif %}">({{ instancia.devolucion }})</font>, al usuario: {{ instancia.prestatario.username }} {% if perms.catalogo.permisoBibliotecario1 %}<a href="{% url 'librosRenovPorLibrero' instancia.id %}">Renovar</a>{% endif %}
+
+
       </li>
       {% endfor %}
     </ul>

@@ -17,3 +17,7 @@ urlpatterns += [
 urlpatterns += [
     path('bibliotecariosPermiso2/', views.VistaEjemplaresParaBibliotecarios2.as_view(), name='VistaBibliotecarios2'),
 ]
+
+urlpatterns += [
+    path('libro/<uuid:pk>/renovado/', views.RenovacionLibroPorLibrero, name='librosRenovPorLibrero'),
+]

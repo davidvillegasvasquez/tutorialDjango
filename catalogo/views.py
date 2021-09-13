@@ -4,6 +4,13 @@ from .models import Libro, Autor, EjemplarEspecifico, Genero
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+import datetime
+from catalogo.forms import FormRenovLibro
+
 # Create your views here.
 
 def index(request):
@@ -88,3 +95,38 @@ class VistaEjemplaresParaBibliotecarios2(PermissionRequiredMixin, generic.ListVi
     def get_queryset(self):
         return EjemplarEspecifico.objects.filter(status__exact='p').order_by('devolucion')
 """
+
+@login_required
+@permission_required('catalogo.permisoBibliotecario1', raise_exception=True)
+def RenovacionLibroPorLibrero(request, pk):
+    """View function for renewing a specific BookInstance by librarian."""
+    libro_ejemEspecif = get_object_or_404(EjemplarEspecifico, pk=pk)
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        formulario = FormRenovLibro(request.POST)
+
+        # Check if the form is valid:
+        if formulario.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            libro_ejemEspecif.devolucion = formulario.cleaned_data['fecha_renovacion']
+            libro_ejemEspecif.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse('VistaBibliotecarios1'))
+
+    # If this is a GET (or any other method) create the default form. Y este formulario tendrá el mensaje de error en forma de lista ul por defecto, que se específico en la definición de su clase FormRenovLibro en forms.py
+    else:
+        fecha_propuesta_renov = datetime.date.today() + datetime.timedelta(weeks=3)
+        formulario = FormRenovLibro(initial={'fecha_renovacion': fecha_propuesta_renov})
+
+    context = {
+        'formu': formulario,
+        'libro_instancia': libro_ejemEspecif,
+    }
+
+    return render(request, 'catalogo/libroRenovadoPorLibrero.html', context)
+
+
