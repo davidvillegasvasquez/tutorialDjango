@@ -1,0 +1,17 @@
+{% extends "base_generica.html" %}
+
+{% block content %}
+  <h1>Renovar: {{ libro_instancia.libro.titulo }}</h1>
+  <p>Prestatario: {{ libro_instancia.prestatario }}</p>
+  <p{% if libro_instancia.esta_atrasado %} class="text-danger"{% endif %}>Fecha de vencimiento: {{ libro_instancia.devolucion }}</p>
+  <p></p>
+  <form action="" method="POST">
+    {% csrf_token %}
+    <table>
+        
+    	{{ formu.as_table }}
+    </table>
+    <input type="submit" value="Enviar">
+  </form>
+{% endblock %}
+
