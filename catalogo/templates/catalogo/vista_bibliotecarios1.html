@@ -1,4 +1,4 @@
-<!-- Plantilla vista_bibliotecarios1.html-->
+<!-- Plantilla vista_bibliotecarios1.html -->
 
 {% extends "base_generica.html" %}
 
@@ -7,7 +7,7 @@
 
     {% if ejemplarespecifico_list %}
     <ul>
-
+<!--Recuerde que ejemplaresespecificos_list es un identificador builtin de django que por norma de sintaxis, tiene el formato nombreModeloEnMinúsculas_list, y que retorna una colección de objetos, EjemplarEspecifico.objects, producto del filtrado get_queryset a base del criterio de status, prestados ('p'), de la vista basada en clase derivada de generic.ListView, VistaEjemplaresParaBibliotecarios1, en el módulo views.py, y enlazada o dirigida desde la plantilla base_generica.html, a través de la referencia de hipertexto, href="{% url 'VistaBibliotecarios1' %} presente en dicha plantilla de origen.-->
       {% for instancia in ejemplarespecifico_list %}
       <li>
         <a href="{% url 'libro-detail' instancia.libro.pk %}">{{instancia.libro.titulo}}</a> <font class="{% if instancia.esta_atrasado %}text-danger{% endif %}">({{ instancia.devolucion }})</font>, al usuario: {{ instancia.prestatario.username }} {% if perms.catalogo.permisoBibliotecario1 %}<a href="{% url 'librosRenovPorLibrero' instancia.id %}">Renovar</a>{% endif %}

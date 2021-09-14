@@ -12,7 +12,14 @@
        {% else %}
          no pertenece a ningún grupo,
        {% endif %}
-       y tienen tanto el permiso nivel 1, como el nivel 2.<p>
-
+       y tienen tanto el permiso nivel 1, como el nivel 2.
+    </p>
+    <p>Este es un formulario sin ningun enlace funcional de ejemplo aquí:</p>
+    <label for="">Etiqueta para txtBox1: </label><!--Etiqueta-->
+    <input id="txtBox1" type="" name="nomtxtBox1" value="Texto ini txtBox1" ><!--txtBox1.  -->
+    <input type="button" value="OK"><br><!--Botón para txtBox1 -->
+    <input id="txtBox2" type="" name="nomtxtBox2" value="Texto ini txtBox2" ><br><!--txtBox2. Recuerde, <br> es break, y representa un salto de línea(retorno de carro).-->
+    <input id="txtBox3" type="" name="nomtxtBox3" value="Texto ini txtBox3" ><!--txtBox2-->
+        
 {% endblock %}
 <!-- Todo este código a nivel de la plantilla es mucho menos eficiente que implementarlo a nivel de las vista en una función. Se hace aquí solamente con fines didácticos, para esta práctica con programación de plantillas. -->

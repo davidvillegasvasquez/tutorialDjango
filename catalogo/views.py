@@ -98,6 +98,7 @@ class VistaEjemplaresParaBibliotecarios2(PermissionRequiredMixin, generic.ListVi
 
 @login_required
 @permission_required('catalogo.permisoBibliotecario1', raise_exception=True)
+#Primera vista basada en función que se presenta en este ejemplo. Es por eso que para este tipo de vista, su referencia en el mapeador que la localiza no lleva la extensión .as_view() al final. No es una subclase.
 def RenovacionLibroPorLibrero(request, pk):
     """View function for renewing a specific BookInstance by librarian."""
     libro_ejemEspecif = get_object_or_404(EjemplarEspecifico, pk=pk)
@@ -110,8 +111,8 @@ def RenovacionLibroPorLibrero(request, pk):
 
         # Check if the form is valid:
         if formulario.is_valid():
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            libro_ejemEspecif.devolucion = formulario.cleaned_data['fecha_renovacion']
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field). El método is_valid() ejecuta implicitamente el método clean_campoFechaDeRenovacion de la clase FormRenovLibro a la que pertenece el objeto formulario.
+            libro_ejemEspecif.devolucion = formulario.cleaned_data['campoFechaDeRenovacion'] #Recuerde que campoFechaDeRenovacion, es el campo de tipo fecha (DateField) de la clase de tipo form, FormRenovLibro, que está en el módulo forms.py.
             libro_ejemEspecif.save()
 
             # redirect to a new URL:
@@ -120,7 +121,7 @@ def RenovacionLibroPorLibrero(request, pk):
     # If this is a GET (or any other method) create the default form. Y este formulario tendrá el mensaje de error en forma de lista ul por defecto, que se específico en la definición de su clase FormRenovLibro en forms.py
     else:
         fecha_propuesta_renov = datetime.date.today() + datetime.timedelta(weeks=3)
-        formulario = FormRenovLibro(initial={'fecha_renovacion': fecha_propuesta_renov})
+        formulario = FormRenovLibro(initial={'campoFechaDeRenovacion': fecha_propuesta_renov})
 
     context = {
         'formu': formulario,
