@@ -5,13 +5,13 @@
 {% block content %}
     <h1>Lista de Autores</h1>
 
-    {% if autor_list %} <!-- autor_list es una variable de plantilla del tipo nombre_del_modelo_list (_list es un calificador reservado de django, no arbitrario). -->
+    {% if autor_list %} <!-- autor_list es una variable de plantilla del tipo nombreDeModelo(campo)_list (_list es un calificador reservado de django, no arbitrario). -->
     <ul>
 
       {% for autor in autor_list %}<!--como dijimos arriba, _list es una palabra resevada de django -->
       <li>
-        <a href="{{ autor.get_absolute_url }}">{{ autor.apellido }}, &nbsp;{{autor.nombre}}&nbsp({{ autor.fecha_nacimiento }}, &nbsp{{autor.fecha_muerte}})</a>
-<!-- recuerde, espacio en blanco en html es &nbsp (el ; es prescindible) -->
+        <a href="{{ autor.get_absolute_url }}">{{ autor.apellido }}, &nbsp;{{autor.nombre}}</a>&nbsp({{ autor.fecha_nacimiento }}, &nbsp{{autor.fecha_muerte}})&nbsp{% if perms.catalogo.permisoBibliotecario2 %}<a href="{% url 'autor-update' autor.id %}">Actualizar</a>&nbsp<a href="{% url 'autor-delete' autor.id %}">Borrar</a>{% endif %}
+<!-- recuerde, espacio en blanco en html es &nbsp. Para este caso se puede colocar dentro de las etiquetas anchor (</a></a>) o fuera de ella. Hace el mismo efecto de espacio en blanco. -->
 
       </li>
       {% endfor %}

@@ -45,12 +45,14 @@
           <hr> <!-- horizontal rule -->
           <ul class="sidebar-nav">
 	  <li>{{ user.groups.all }}</li>
-          <li>Usuario tipo Staff:</li><!-- Estructura selectiva para no hacer dos grupos de bibliotecarios (los que tienen sólo el permiso1, como los que tienen los dos: -->
+          <li>Usuario tipo Staff:</li><!-- Estructura selectiva para no hacer dos grupos de bibliotecarios (los que tienen sólo el permiso1, como los que tienen los dos:-->
           {% if perms.catalogo.permisoBibliotecario1 %}
-              <li><a href="{% url 'VistaBibliotecarios1' %}">Plantilla bibliotecario con sólo permiso de nivel 1</a></li>
-              
+            <li><a href="{% url 'VistaBibliotecarios1' %}">Plantilla bibliotecario con sólo permiso de nivel 1</a></li>
+	      
 	      {% if perms.catalogo.permisoBibliotecario2 %}
                   <li><a href="{% url 'VistaBibliotecarios2' %}">Página para usuarios si tiene ambos permisos bibliotecarios nivel 1 y 2, independientemente al grupo al que pertenece</a></li>
+                  <li><a href="{% url 'autor-create' %}">Ingresar nuevo autor</a></li>
+                 
               {% endif %}
           {% endif %} <!-- Fin del bloque if perms.catalogo.permisoBibliotecario1  -->
           

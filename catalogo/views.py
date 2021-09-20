@@ -103,31 +103,56 @@ def RenovacionLibroPorLibrero(request, pk):
     """View function for renewing a specific BookInstance by librarian."""
     libro_ejemEspecif = get_object_or_404(EjemplarEspecifico, pk=pk)
 
-    # If this is a POST request then process the Form data
+    # If this is a POST request then process the Form data. Este if siempre se evaluará con el valor request.method diferente de 'POST' fatalmente, la primera vez. Esto, puesto que no se ha introducido ningun dato en el control del formulario (está virgen) y django detecta que es la primera vez que se accede a él, mandándonos al bloque else, e imprimiendo la plantilla libroRenovadoPorLibrero.html con el control-txtBox1 con la fecha 'campoFechaDeRenovacion': fecha_propuesta_renov}. Después de esta primera vez, request.method siempre será igual a 'POST' fatalmente, y se podrá acceder al if.txtBox1.is_valid, que evaluará la validez de los datos ingresados por el usuario, con el método is_valid().
+#Veamos que dice django: Para los formularios que usan una solicitud POST para enviar información al servidor, el patrón más común es que la vista pruebe con el tipo de solicitud POST (if request.method == 'POST':) para identificar las solicitudes de validación del formulario y GET (usando una else condición) para identificar la solicitud de creación del formulario inicial. Si desea enviar sus datos mediante una GETsolicitud, un enfoque típico para identificar si esta es la primera o la siguiente invocación de vista es leer los datos del formulario (por ejemplo, leer un valor oculto en el formulario):
+
     if request.method == 'POST':
 
-        # Create a form instance and populate it with data from the request (binding):
-        formulario = FormRenovLibro(request.POST)
+        # Create a form instance and populate it with data from the request (binding). Este será el widget de tipo text box de la clase forms.Form, identificado con el identificador-apuntador textBox1, que se presentará en la plantilla libroRenovadoPorLibrero.html:
+        txtBox1 = FormRenovLibro(request.POST)
 
         # Check if the form is valid:
-        if formulario.is_valid():
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field). El método is_valid() ejecuta implicitamente el método clean_campoFechaDeRenovacion de la clase FormRenovLibro a la que pertenece el objeto formulario.
-            libro_ejemEspecif.devolucion = formulario.cleaned_data['campoFechaDeRenovacion'] #Recuerde que campoFechaDeRenovacion, es el campo de tipo fecha (DateField) de la clase de tipo form, FormRenovLibro, que está en el módulo forms.py.
-            libro_ejemEspecif.save()
+        if txtBox1.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field). El método is_valid() ejecuta implicitamente el método clean_campoFechaDeRenovacion de la clase FormRenovLibro a la que pertenece el objeto txtBox1. En caso de error, este txtBox1 se reimprimirá con el mensaje de error en forma de lista ul por defecto, que se específico en la definición de su clase FormRenovLibro en forms.py.
+            libro_ejemEspecif.devolucion = txtBox1.cleaned_data['campoFechaDeRenovacion'] #Recuerde que campoFechaDeRenovacion, es el campo de tipo fecha (DateField) de la clase de tipo form, FormRenovLibro, que está en el módulo forms.py, y a dónde será enviado el usuario si los datos con que se instanció txtBox1 son válidos.
+            libro_ejemEspecif.save() #Se guardan las modificaciones solicitadas en el txtBox1, guardándolo.
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse('VistaBibliotecarios1'))
 
-    # If this is a GET (or any other method) create the default form. Y este formulario tendrá el mensaje de error en forma de lista ul por defecto, que se específico en la definición de su clase FormRenovLibro en forms.py
+    # If this is a GET (or any other method) create the default form: 
     else:
         fecha_propuesta_renov = datetime.date.today() + datetime.timedelta(weeks=3)
-        formulario = FormRenovLibro(initial={'campoFechaDeRenovacion': fecha_propuesta_renov})
+        txtBox1 = FormRenovLibro(initial={'campoFechaDeRenovacion': fecha_propuesta_renov})
 
     context = {
-        'formu': formulario,
+        'widget_txtBox1': txtBox1,
         'libro_instancia': libro_ejemEspecif,
     }
 
     return render(request, 'catalogo/libroRenovadoPorLibrero.html', context)
 
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+
+from catalogo.models import Autor
+
+class CrearAutor(PermissionRequiredMixin, CreateView):
+    model = Autor
+    fields = ['nombre', 'apellido', 'fecha_nacimiento', 'fecha_muerte']
+    initial = {'fecha_muerte': '11/06/2020'}
+    permission_required = 'catalogo.permisoBibliotecario1'
+    success_url = reverse_lazy('autores')
+
+class ActualizarAutor(PermissionRequiredMixin, UpdateView):
+    model = Autor
+    fields = '__all__' # Not recommended (potential security issue if more fields added)
+    permission_required = 'catalogo.permisoBibliotecario1'
+    success_url = reverse_lazy('autores')
+
+class BorrarAutor(PermissionRequiredMixin, DeleteView):
+    model = Autor
+    success_url = reverse_lazy('autores')
+    permission_required = 'catalogo.permisoBibliotecario1'
 

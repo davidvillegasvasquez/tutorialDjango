@@ -1,0 +1,13 @@
+{% extends "base_generica.html" %}
+
+{% block content %}
+  {# Como esta plantilla es de uso común para autor-update y autor-create (dos vistas diferentes), usamos un filtro de plantilla yesno: si el objeto existe (diferente de None) será yes, esto supone que estamos en una acualización, y se tomará la primera frase 'ACTUALIZACIÓN DE': #}
+  <h3> {{ object|yesno:'ACTUALIZACIÓN DE, INGRESO DE NUEVO' }} AUTOR</h3>
+  <form action="" method="post"> 
+    {% csrf_token %}
+    <table>
+    {{ form.as_table }}
+    </table>
+    <input type="submit" value="Enviar">
+  </form>
+{% endblock %}
