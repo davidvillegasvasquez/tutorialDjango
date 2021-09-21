@@ -25,7 +25,7 @@ class Libro(models.Model):
     titulo = models.CharField(max_length=200)
 
     autor = models.ForeignKey('Autor', on_delete=models.SET_NULL, null=True)
-    # ForeignKey, ya que un libro tiene un solo autor, pero el mismo autor puede haber escrito muchos libros.
+    # ForeignKey, ya que un libro tiene un solo autor, pero el mismo autor puede haber tener diversas títulos en la biblioteca.
     # 'Autor' es un string no un objeto.
     resumen = models.TextField(max_length=1000, help_text="Ingrese una breve descripción del libro")
     isbn = models.CharField('ISBN',max_length=13, help_text='hasta 13 Caracteres <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')

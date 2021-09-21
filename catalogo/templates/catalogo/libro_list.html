@@ -12,7 +12,7 @@
 
       {% for libro in libro_list %}<!--como dijimos arriba, _list es una palabra resevada de django, no arbitraria del usuario. -->
       <li>
-        <a href="{{ libro.get_absolute_url }}">{{ libro.titulo }}</a> ({{libro.autor}})
+        <a href="{{ libro.get_absolute_url }}">{{ libro.titulo }}</a> ({{libro.autor}})&nbsp{% if perms.catalogo.permisoBibliotecario1 %}<a href="{% url 'libro-update' libro.id %}">Actualizar</a>&nbsp<a href="{% url 'libro-delete' libro.id %}">Borrar</a>{% endif %}
       </li>
       {% endfor %}
 

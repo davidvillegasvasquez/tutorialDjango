@@ -156,3 +156,22 @@ class BorrarAutor(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('autores')
     permission_required = 'catalogo.permisoBibliotecario1'
 
+from catalogo.models import Libro
+
+class CrearLibro(PermissionRequiredMixin, CreateView):
+    model = Libro
+    fields = ['titulo', 'autor', 'resumen', 'isbn', 'genero', 'lenguaje']
+    #initial = {'lenguaje': 'ingles'}
+    permission_required = 'catalogo.permisoBibliotecario1'
+    success_url = reverse_lazy('autores')
+
+class ActualizarLibro(PermissionRequiredMixin, UpdateView):
+    model = Libro
+    fields = '__all__' # Not recommended (potential security issue if more fields added)
+    permission_required = 'catalogo.permisoBibliotecario1'
+    success_url = reverse_lazy('autores')
+
+class BorrarLibro(PermissionRequiredMixin, DeleteView):
+    model = Libro
+    success_url = reverse_lazy('autores')
+    permission_required = 'catalogo.permisoBibliotecario1'
