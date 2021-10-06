@@ -161,7 +161,6 @@ from catalogo.models import Libro
 class CrearLibro(PermissionRequiredMixin, CreateView):
     model = Libro
     fields = ['titulo', 'autor', 'resumen', 'isbn', 'genero', 'lenguaje']
-    #initial = {'lenguaje': 'ingles'}
     permission_required = 'catalogo.permisoBibliotecario1'
     success_url = reverse_lazy('autores')
 
